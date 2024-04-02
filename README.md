@@ -1,6 +1,4 @@
-> Click [here](https://github.com/Yiannistaos/senior-wp-assestment-yiannis-christodoulou/tree/main/wp-was-this-article-helpful/trunk) to see the Documentation of the **"Was This Article Helpful? - WordPress plugin"**, by Yiannis Christodoulou, or navigate to the `/wp-was-this-article-helpful/trunk` directory in this repo.
-
-# WPDC - WordPress Docker Compose
+# ordPress Docker Compose
 
 Easy WordPress development with Docker and Docker Compose.
 
