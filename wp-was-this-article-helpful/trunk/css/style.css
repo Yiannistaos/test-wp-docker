@@ -1,0 +1,61 @@
+.was-this-helpful-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.was-this-helpful-label,
+.thank-you-feedback-label {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    margin-right: 15px;
+    display: inline-block;
+}
+.vote-buttons {
+    display: inline-block;
+}
+.emofi-face {
+    font-size: 24px;
+    color: gray;
+}
+.happy-face::before {
+    margin-right: 2px;
+    content: '😊';
+}
+.unhappy-face::before {
+    margin-right: 2px;
+    content: '😞';
+}
+.vote-btn {
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background: #fff;
+    color: #333;
+    padding: 2px 15px;
+}
+.vote-btn:first-child {
+    margin-right: 5px;
+}
+.vote-btn:hover {
+    border: 2px solid blue;
+    background: #fff;
+    color: #333;
+}
+
+.vote-results {
+    display: inline-block;
+}
+.vote-result {
+    display: inline-block;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    background: #fff;
+    color: #333;
+    padding: 2px 15px;
+}
+.vote-result.selected {
+    border: 2px solid blue;
+    background: #fff;
+    color: #333;
+}
