@@ -1,4 +1,4 @@
-# ordPress Docker Compose
+# Test WordPress with Docker
 
 Easy WordPress development with Docker and Docker Compose.
 
