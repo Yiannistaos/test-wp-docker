@@ -20,7 +20,6 @@ services:
     volumes:
       - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
       - ./wp-app:/var/www/html/subfolder # Full wordpress project
-      - ./wp-was-this-article-helpful/trunk/:/var/www/html/subfolder/wp-content/plugins/wp-was-this-article-helpful # Plugin development
       - /Users/yiannistaos/Projects/extensions-without-generator/wp-login-as-user/src/login-as-user/:/var/www/html/subfolder/wp-content/plugins/login-as-user # Plugin development
       #- ./theme-name/trunk/:/var/www/html/wp-content/themes/theme-name # Theme development
     environment:
