@@ -159,3 +159,36 @@ wp plugin lists
 You can also visit `http://127.0.0.1:8080` to access phpMyAdmin after starting the containers.
 
 The default username is `root`, and the password is the same as supplied in the `.env` file.
+
+## Custom Domains
+
+To use a custom fake domain locally, such as mywordpress.test instead of http://127.0.0.1:8590/, you need to perform a few steps involving your system's hosts file and your web server configuration. Here's a step-by-step guide:
+
+1. Open a terminal.
+2. Edit the `/etc/hosts` file with sudo privileges
+3. Add a new line: 127.0.0.1 subdomain.loginasuser.xyz.
+4. Save and close the file
+5. Then Modify WordPress Configuration `wp-config.php`
+
+```php
+define('WP_HOME','http://subdomain.loginasuser.xyz/subfolder');
+define('WP_SITEURL','http://subdomain.loginasuser.xyz/subfolder');
+```
+
+After completing these steps, you should be able to access your local WordPress site by navigating to `http://subdomain.loginasuser.xyz/subfolder` in your browser.
+
+## .htaccess
+
+```bash
+# BEGIN WordPress
+
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /subfolder/
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /subfolder/index.php [L]
+
+# END WordPress
+```
