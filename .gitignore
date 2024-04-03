@@ -124,3 +124,4 @@ license.txt
 # plugins
 #/wp-app/wp-content/plugins/*
 #!/wp-app/wp-content/plugins/hello.php
+yt.readme.md
