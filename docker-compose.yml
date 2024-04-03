@@ -1,14 +1,24 @@
 version: '3.9'
 
 services:
+
+  nginx:
+    image: nginx:latest
+    depends_on:
+      - wp
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+
   wp:
-    image: wordpress:6.1.1 # https://hub.docker.com/_/wordpress/
+    image: wordpress #:6.1.1 # https://hub.docker.com/_/wordpress/
     container_name: "${APP_NAME}_wordpress"
     ports:
-      - ${IP}:${PORT}:80 # change ip if required
+      - ${WP_PORT}:80 # change ip if required
     volumes:
       - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
-      - ./wp-app:/var/www/html # Full wordpress project
+      - ./wp-app:/var/www/html/subfolder # Full wordpress project
       - ./wp-was-this-article-helpful/trunk/:/var/www/html/wp-content/plugins/wp-was-this-article-helpful # Plugin development
       #- ./theme-name/trunk/:/var/www/html/wp-content/themes/theme-name # Theme development
     environment:
@@ -32,7 +42,7 @@ services:
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
       UPLOAD_LIMIT: 50M
     ports:
-      - ${IP}:${PHPMYADMIN_PORT}:80
+      - ${PHPMYADMIN_PORT}:80
     links:
       - db:db
 
@@ -40,7 +50,7 @@ services:
     image: mysql:latest # https://hub.docker.com/_/mysql/ - or mariadb https://hub.docker.com/_/mariadb
     container_name: "${APP_NAME}_database"
     ports:
-      - ${IP}:${DB_PORT}:3306 # change ip if required
+      - ${DB_PORT}:3306 # change ip if required
     command: [
         '--default_authentication_plugin=mysql_native_password',
         '--character-set-server=utf8mb4',
