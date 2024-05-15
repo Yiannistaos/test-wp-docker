@@ -125,3 +125,6 @@ license.txt
 #/wp-app/wp-content/plugins/*
 #!/wp-app/wp-content/plugins/hello.php
 yt.readme.md
+wp-app/wp-content/plugins/
+
+!/wp-app/create-a-site.php
