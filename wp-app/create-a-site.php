@@ -75,12 +75,16 @@ function schedule_site_deletion($site_slug, $delay_minutes) {
 
 // Check if the button was pressed
 if (isset($_POST['generate_site'])) {
+
+    $site_type = isset($_POST['site_type']) ? $_POST['site_type'] : 'site';
+    
+    // END: Debugging
     try {
         // Generate a random site slug
         // $unique_id = uniqid();
         $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
         $unique_id = substr(str_shuffle($characters), 0, 4);
-        $site_slug = 'site-' . $unique_id;
+        $site_slug = $site_type.'-' . $unique_id;
 
         // 1. Create a new site
         $create_site_command = "site create --slug='$site_slug' --title='Web357 Demo Site (".$site_slug.")' --email=admin@$site_slug.com";
@@ -168,7 +172,19 @@ if (isset($_POST['generate_site'])) {
         }
 
         // 5. Install and activate three plugins
-        $plugins = ['login-as-user'];
+        switch ($site_type) {
+            case 'site':
+                $plugins = ['login-as-user', 'fixed-html-toolbar'];
+                break;
+            case 'loginasuser':
+                $plugins = ['login-as-user'];
+                break;
+            case 'fixedhtmltoolbar':
+                $plugins = ['fixed-html-toolbar'];
+                break;
+            default:
+                $plugins = [];
+        }   
         if (!empty($plugins )) {
             foreach ($plugins as $plugin) {
                 $install_plugin_command = "plugin install $plugin --activate  --url=$new_site_url";
@@ -204,7 +220,16 @@ if (isset($_POST['generate_site'])) {
     <title>Generate New Site</title>
 </head>
 <body>
+    <h1>Generate New Site</h1>
+    <?php
+    $types = ['site', 'loginasuser', 'fixedhtmltoolbar'];
+    ?>
     <form method="post">
+        <select name="site_type">
+            <?php foreach ($types as $type) : ?>
+                <option value="<?php echo $type; ?>"><?php echo ($type === 'site' ? 'All' : $type); ?></option>
+            <?php endforeach; ?>
+        </select>
         <button type="submit" name="generate_site">Generate New Site</button>
     </form>
 </body>
