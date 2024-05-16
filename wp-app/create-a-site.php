@@ -66,6 +66,9 @@ function schedule_site_deletion($site_slug, $delay_minutes) {
         wp_schedule_single_event($timestamp, $event_name, array($site_slug));
     }
 
+    // Store the deletion timestamp in the options table
+    update_site_option('deletion_timestamp_' . $site_slug, $timestamp);
+
     // Add the event callback dynamically
     add_action($event_name, 'delete_site_callback', 10, 1);
 }
@@ -74,20 +77,23 @@ function schedule_site_deletion($site_slug, $delay_minutes) {
 if (isset($_POST['generate_site'])) {
     try {
         // Generate a random site slug
-        $unique_id = uniqid();
+        // $unique_id = uniqid();
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+        $unique_id = substr(str_shuffle($characters), 0, 4);
         $site_slug = 'site-' . $unique_id;
 
         // 1. Create a new site
-        $create_site_command = "site create --slug=$site_slug --title='Web357 Demo Site (".$site_slug.")' --email=admin@$site_slug.com";
+        $create_site_command = "site create --slug='$site_slug' --title='Web357 Demo Site (".$site_slug.")' --email=admin@$site_slug.com";
         execute_wp_cli_command($create_site_command);
 
         // Fetch the site URL
         $site_list_output = execute_wp_cli_command('site list --field=url');
         $site_list = explode(PHP_EOL, trim($site_list_output));
+
         $new_site_url = array_filter($site_list, function($url) use ($site_slug) {
             return strpos($url, $site_slug) !== false;
         });
-
+        
         if (empty($new_site_url)) {
             throw new Exception("Failed to retrieve the URL for the new site.");
         }
@@ -173,6 +179,10 @@ if (isset($_POST['generate_site'])) {
         // Schedule the deletion of the sub-site after X minutes (e.g., 60 minutes)
         $delay_minutes = 10; // 10 minutes
         schedule_site_deletion($site_slug, $delay_minutes);
+
+        // Redirect to the new site URL
+        header("Location: $new_site_url" . 'wp-admin');
+        exit;
 
         // Display success message with site URL and user details
         $new_site_url = $new_site_url . 'wp-admin';
