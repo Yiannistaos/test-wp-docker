@@ -8,9 +8,6 @@ error_reporting(E_ALL);
 define('WP_USE_THEMES', false);
 require('./wp-load.php');
 
-// Docker container name where WP-CLI is installed
-$docker_container = 'wp-docker-test_wordpress';
-
 // Log directory
 $log_dir = '/var/www/html/logs';
 $log_file = $log_dir . '/wp_cli.log';
@@ -24,7 +21,7 @@ if (!file_exists($log_dir)) {
 
 // Function to execute WP-CLI commands and handle errors
 function execute_wp_cli_command($command, $sub_site_url = '') {
-    global $docker_container, $log_dir, $log_file;
+    global $log_dir, $log_file;
     $full_command = "wp $command";
     if (!empty($sub_site_url)) {
         $full_command .= " --url=$sub_site_url";
